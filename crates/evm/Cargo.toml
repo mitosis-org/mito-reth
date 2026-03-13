@@ -1,0 +1,25 @@
+[package]
+name        = "mi-reth-evm"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[dependencies]
+mi-reth-primitives = { path = "../primitives" }
+
+# reth upstream v1.11.3
+reth-ethereum          = { git = "https://github.com/paradigmxyz/reth", tag = "v1.11.3", features = ["evm", "node-api"] }
+reth-evm               = { git = "https://github.com/paradigmxyz/reth", tag = "v1.11.3" }
+reth-chainspec         = { git = "https://github.com/paradigmxyz/reth", tag = "v1.11.3" }
+reth-ethereum-primitives = { git = "https://github.com/paradigmxyz/reth", tag = "v1.11.3" }
+reth-primitives-traits = { git = "https://github.com/paradigmxyz/reth", tag = "v1.11.3" }
+
+# alloy
+alloy-evm.workspace      = true
+alloy-consensus.workspace = true
+alloy-eips.workspace      = true
+
+# revm
+revm.workspace = true
+
+eyre.workspace = true

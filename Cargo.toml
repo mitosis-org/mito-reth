@@ -1,0 +1,46 @@
+[workspace]
+members = [
+    "crates/primitives",
+    "crates/evm",
+    "bin/mi-reth",
+]
+resolver = "2"
+
+[workspace.package]
+version     = "0.1.0"
+edition     = "2024"
+rust-version = "1.88"
+license     = "MIT OR Apache-2.0"
+repository  = "https://github.com/mitosis-org/mi-reth"
+
+# ---------------------------------------------------------------------------
+# Upstream reth v1.11.3 — all reth/* deps point here.
+# The ress subprotocol crates (reth-ress-protocol, reth-ress-provider) are
+# Mitosis-specific and intentionally NOT in upstream; they are declared in
+# bin/mi-reth/Cargo.toml and referenced from the mitosis fork directly.
+# ---------------------------------------------------------------------------
+[workspace.dependencies]
+# reth — upstream v1.11.3
+reth-ethereum         = { git = "https://github.com/paradigmxyz/reth", tag = "v1.11.3", features = ["node", "evm", "cli", "network"] }
+reth-evm              = { git = "https://github.com/paradigmxyz/reth", tag = "v1.11.3" }
+reth-chainspec        = { git = "https://github.com/paradigmxyz/reth", tag = "v1.11.3" }
+reth-ethereum-primitives = { git = "https://github.com/paradigmxyz/reth", tag = "v1.11.3" }
+reth-primitives-traits = { git = "https://github.com/paradigmxyz/reth", tag = "v1.11.3" }
+reth-node-builder     = { git = "https://github.com/paradigmxyz/reth", tag = "v1.11.3" }
+
+# alloy (versions from reth v1.11.3 workspace)
+alloy-evm        = "0.27.2"
+alloy-primitives = { version = "1.5.6", default-features = false, features = ["std"] }
+alloy-consensus  = { version = "1.6.3", default-features = false, features = ["std"] }
+alloy-eips       = { version = "1.6.3", default-features = false, features = ["std"] }
+alloy-rlp        = "0.3.13"
+
+# revm (version from reth v1.11.3 workspace)
+revm = { version = "34.0.0", default-features = false, features = ["std"] }
+
+# misc
+eyre   = "0.6"
+tokio  = { version = "1", features = ["full"] }
+tracing = "0.1"
+clap   = { version = "4", features = ["derive", "env"] }
+hex    = "0.4"
