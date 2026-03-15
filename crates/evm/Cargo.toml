@@ -16,6 +16,7 @@ reth-primitives-traits = { git = "https://github.com/paradigmxyz/reth", tag = "v
 
 # alloy
 alloy-evm.workspace      = true
+alloy-primitives.workspace = true
 alloy-consensus.workspace = true
 alloy-eips.workspace      = true
 

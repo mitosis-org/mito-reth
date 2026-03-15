@@ -7,6 +7,7 @@
 //! deployment transaction.
 
 use alloy_evm::{block::BlockExecutionError, Evm};
+use revm::context_interface::block::Block;
 use alloy_primitives::{keccak256, U256};
 use mi_reth_primitives::{
     get_multicall3_bytecode, MULTICALL3_ADDRESS, MULTICALL3_HARDFORK_CHAIN_ID,
@@ -32,7 +33,7 @@ where
     if evm.chain_id() != MULTICALL3_HARDFORK_CHAIN_ID {
         return Ok(());
     }
-    if evm.block().number.saturating_to::<u64>() != MULTICALL3_REPLACEMENT_BLOCK {
+    if evm.block().number().saturating_to::<u64>() != MULTICALL3_REPLACEMENT_BLOCK {
         return Ok(());
     }
 
@@ -52,10 +53,12 @@ where
         nonce: 1, // non-zero nonce marks this as a deployed contract
         code_hash,
         code: Some(Bytecode::new_raw(bytecode)),
+        account_id: None,
     };
 
     let account = Account {
-        info: account_info,
+        info: account_info.clone(),
+        original_info: Box::new(account_info),
         transaction_id: 0,
         storage: Default::default(),
         status: AccountStatus::Touched | AccountStatus::Created,

@@ -83,7 +83,9 @@ where
         self.inner.finish()
     }
 
-    fn apply_post_execution_changes(&mut self) -> Result<(), BlockExecutionError> {
+    fn apply_post_execution_changes(
+        self,
+    ) -> Result<BlockExecutionResult<Self::Receipt>, BlockExecutionError> {
         self.inner.apply_post_execution_changes()
     }
 
@@ -142,7 +144,7 @@ where
         ctx: Self::ExecutionCtx<'a>,
     ) -> impl BlockExecutorFor<'a, Self, DB, I>
     where
-        DB: Database + 'a,
+        DB: Database + std::fmt::Debug + 'a,
         I: Inspector<
                 <Self::EvmFactory as EvmFactory>::Context<&'a mut State<DB>>,
             > + 'a,
