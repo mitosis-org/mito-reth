@@ -26,7 +26,7 @@ use reth_ethereum::{
 
 fn main() -> eyre::Result<()> {
     Cli::parse_args().run(|builder, _args| async move {
-        let NodeHandle { node: _, node_exit_future } = builder
+        let NodeHandle { node: _node, node_exit_future } = builder
             // Replace the default executor with the Mitosis-aware one.
             // Everything else (EVM factory, precompiles, RPC, P2P) is
             // standard upstream reth v1.11.3.
