@@ -9,9 +9,11 @@ use alloy_evm::{eth::EthBlockExecutionCtx, EvmEnv};
 use reth_chainspec::ChainSpec;
 use reth_ethereum::evm::{EthBlockAssembler, EthEvmConfig};
 use reth_ethereum_primitives::{Block, EthPrimitives};
-use reth_evm::{ConfigureEvm, NextBlockEnvAttributes};
+use reth_evm::{ConfigureEngineEvm, ConfigureEvm, ExecutableTxIterator, NextBlockEnvAttributes};
 use reth_primitives_traits::{SealedBlock, SealedHeader};
 use revm::primitives::hardfork::SpecId;
+
+use alloy_rpc_types_engine::ExecutionData;
 
 use crate::MitosisBlockExecutorFactory;
 
@@ -81,5 +83,28 @@ impl ConfigureEvm for MitosisEvmConfig {
         attributes: NextBlockEnvAttributes,
     ) -> Result<EthBlockExecutionCtx<'_>, Self::Error> {
         self.inner.context_for_next_block(parent, attributes)
+    }
+}
+
+impl ConfigureEngineEvm<ExecutionData> for MitosisEvmConfig {
+    fn evm_env_for_payload(
+        &self,
+        payload: &ExecutionData,
+    ) -> Result<EvmEnv<SpecId>, Self::Error> {
+        self.inner.evm_env_for_payload(payload)
+    }
+
+    fn context_for_payload<'a>(
+        &self,
+        payload: &'a ExecutionData,
+    ) -> Result<EthBlockExecutionCtx<'a>, Self::Error> {
+        self.inner.context_for_payload(payload)
+    }
+
+    fn tx_iterator_for_payload(
+        &self,
+        payload: &ExecutionData,
+    ) -> Result<impl ExecutableTxIterator<Self>, Self::Error> {
+        self.inner.tx_iterator_for_payload(payload)
     }
 }

@@ -4,6 +4,10 @@ version.workspace = true
 edition.workspace = true
 license.workspace = true
 
+[features]
+default = ["node"]
+node = ["reth-ethereum/node", "dep:eyre"]
+
 [dependencies]
 mi-reth-primitives = { path = "../primitives" }
 
@@ -19,8 +23,9 @@ alloy-evm.workspace      = true
 alloy-primitives.workspace = true
 alloy-consensus.workspace = true
 alloy-eips.workspace      = true
+alloy-rpc-types-engine.workspace = true
 
 # revm
 revm.workspace = true
 
-eyre.workspace = true
+eyre = { workspace = true, optional = true }

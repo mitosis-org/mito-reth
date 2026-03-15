@@ -33,6 +33,7 @@ alloy-evm        = "0.27.2"
 alloy-primitives = { version = "1.5.6", default-features = false, features = ["std"] }
 alloy-consensus  = { version = "1.6.3", default-features = false, features = ["std"] }
 alloy-eips       = { version = "1.6.3", default-features = false, features = ["std"] }
+alloy-rpc-types-engine = { version = "1.6.3", default-features = false, features = ["std"] }
 alloy-rlp        = "0.3.13"
 
 # revm (version from reth v1.11.3 workspace)

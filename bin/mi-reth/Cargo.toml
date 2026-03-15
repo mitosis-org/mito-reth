@@ -26,11 +26,8 @@ default-run = "mi-reth"
 mi-reth-evm = { path = "../../crates/evm" }
 
 reth-ethereum = { git = "https://github.com/paradigmxyz/reth", tag = "v1.11.3", features = ["node", "cli", "network"] }
-reth-node-builder = { git = "https://github.com/paradigmxyz/reth", tag = "v1.11.3" }
 
 eyre.workspace   = true
-tokio.workspace  = true
-tracing.workspace = true
 
 [[bin]]
 name = "mi-reth"

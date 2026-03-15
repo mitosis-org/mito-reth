@@ -4520,9 +4520,6 @@ dependencies = [
  "eyre",
  "mi-reth-evm",
  "reth-ethereum",
- "reth-node-builder",
- "tokio",
- "tracing",
 ]
 
 [[package]]
@@ -4533,6 +4530,7 @@ dependencies = [
  "alloy-eips",
  "alloy-evm",
  "alloy-primitives",
+ "alloy-rpc-types-engine",
  "eyre",
  "mi-reth-primitives",
  "reth-chainspec",
