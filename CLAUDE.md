@@ -60,23 +60,6 @@ cargo +nightly fmt --all --check      # check formatting
 - Thin wrapper pattern: every Mitosis type wraps an upstream type and delegates all methods; the only override is `apply_pre_execution_changes`
 - System-call hook must be safe to call unconditionally — chain ID and block number guards are inside the function, not at the call site
 
-## Running locally with Summit
-
-The Summit `testnet` binary expects a binary named `reth` in PATH. `mi-reth` is a drop-in:
-
-```bash
-cargo build --release
-export PATH="$(pwd)/target/release:$PATH"
-cp target/release/mi-reth target/release/reth   # or symlink
-cd ../summit && cargo run --bin testnet
-```
-
-Engine API is on `--authrpc.port` (default 8551), identical to stock reth.
-
-## Ress feature (disabled)
-
-`reth-ress-protocol` and `reth-ress-provider` live in the Mitosis reth fork and depend on fork-specific internals incompatible with upstream v1.11.3 in the same workspace. The feature flag `ress` exists in `src/ress.rs` but cannot be compiled until those crates are ported to upstream. Track in MIT-307.
-
 ## Dependency versions (from workspace)
 
 | Dep | Version |
