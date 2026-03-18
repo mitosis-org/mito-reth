@@ -5,7 +5,7 @@
 use std::sync::Arc;
 
 use alloy_consensus::Header;
-use alloy_evm::{eth::EthBlockExecutionCtx, EvmEnv};
+use alloy_evm::{EvmEnv, eth::EthBlockExecutionCtx};
 use reth_chainspec::ChainSpec;
 use reth_ethereum::evm::{EthBlockAssembler, EthEvmConfig};
 use reth_ethereum_primitives::{Block, EthPrimitives};
@@ -38,7 +38,10 @@ impl MitosisEvmConfig {
         let inner = EthEvmConfig::new(chain_spec);
         let block_executor_factory =
             MitosisBlockExecutorFactory::new(inner.block_executor_factory().clone());
-        Self { inner, block_executor_factory }
+        Self {
+            inner,
+            block_executor_factory,
+        }
     }
 }
 
@@ -87,10 +90,7 @@ impl ConfigureEvm for MitosisEvmConfig {
 }
 
 impl ConfigureEngineEvm<ExecutionData> for MitosisEvmConfig {
-    fn evm_env_for_payload(
-        &self,
-        payload: &ExecutionData,
-    ) -> Result<EvmEnv<SpecId>, Self::Error> {
+    fn evm_env_for_payload(&self, payload: &ExecutionData) -> Result<EvmEnv<SpecId>, Self::Error> {
         self.inner.evm_env_for_payload(payload)
     }
 

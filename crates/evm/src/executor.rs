@@ -13,13 +13,13 @@
 //! is automatically `impl ExecutableTx<Inner>`, so all delegation calls compile.
 
 use alloy_evm::{
+    Evm, EvmFactory,
     block::{
         BlockExecutionError, BlockExecutionResult, BlockExecutor, BlockExecutorFactory,
         BlockExecutorFor, ExecutableTx, OnStateHook,
     },
-    Evm, EvmFactory,
 };
-use revm::{database::State, inspector::Inspector, Database};
+use revm::{Database, database::State, inspector::Inspector};
 
 use crate::system_calls::apply_multicall3_deployment;
 
@@ -47,9 +47,9 @@ where
     <Inner::Evm as Evm>::DB: Database + revm::DatabaseCommit,
 {
     type Transaction = Inner::Transaction;
-    type Receipt     = Inner::Receipt;
-    type Evm         = Inner::Evm;
-    type Result      = Inner::Result;
+    type Receipt = Inner::Receipt;
+    type Evm = Inner::Evm;
+    type Result = Inner::Result;
 
     // --- Mitosis hook -------------------------------------------------------
 
@@ -70,10 +70,7 @@ where
         self.inner.execute_transaction_without_commit(tx)
     }
 
-    fn commit_transaction(
-        &mut self,
-        output: Self::Result,
-    ) -> Result<u64, BlockExecutionError> {
+    fn commit_transaction(&mut self, output: Self::Result) -> Result<u64, BlockExecutionError> {
         self.inner.commit_transaction(output)
     }
 
@@ -129,10 +126,10 @@ where
     Inner: BlockExecutorFactory,
     Self: 'static,
 {
-    type EvmFactory       = Inner::EvmFactory;
+    type EvmFactory = Inner::EvmFactory;
     type ExecutionCtx<'a> = Inner::ExecutionCtx<'a>;
-    type Transaction      = Inner::Transaction;
-    type Receipt          = Inner::Receipt;
+    type Transaction = Inner::Transaction;
+    type Receipt = Inner::Receipt;
 
     fn evm_factory(&self) -> &Self::EvmFactory {
         self.inner.evm_factory()
@@ -145,9 +142,7 @@ where
     ) -> impl BlockExecutorFor<'a, Self, DB, I>
     where
         DB: Database + std::fmt::Debug + 'a,
-        I: Inspector<
-                <Self::EvmFactory as EvmFactory>::Context<&'a mut State<DB>>,
-            > + 'a,
+        I: Inspector<<Self::EvmFactory as EvmFactory>::Context<&'a mut State<DB>>> + 'a,
     {
         MitosisBlockExecutor::new(self.inner.create_executor(evm, ctx))
     }

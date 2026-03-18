@@ -5,7 +5,7 @@
 //! Mitosis devnet (`chain_id = 124816`).  Everything else in the execution
 //! path delegates to upstream reth v1.11.3.
 
-use alloy_primitives::{address, Address, Bytes};
+use alloy_primitives::{Address, Bytes, address};
 
 /// Address of the Multicall3 contract that receives new bytecode at the
 /// hardfork block.

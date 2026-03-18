@@ -6,17 +6,17 @@
 //! that tooling relying on that address works from genesis without a separate
 //! deployment transaction.
 
-use alloy_evm::{block::BlockExecutionError, Evm};
-use revm::context_interface::block::Block;
-use alloy_primitives::{keccak256, U256};
+use alloy_evm::{Evm, block::BlockExecutionError};
+use alloy_primitives::{U256, keccak256};
 use mi_reth_primitives::{
-    get_multicall3_bytecode, MULTICALL3_ADDRESS, MULTICALL3_HARDFORK_CHAIN_ID,
-    MULTICALL3_REPLACEMENT_BLOCK,
+    MULTICALL3_ADDRESS, MULTICALL3_HARDFORK_CHAIN_ID, MULTICALL3_REPLACEMENT_BLOCK,
+    get_multicall3_bytecode,
 };
+use revm::context_interface::block::Block;
 use revm::{
+    DatabaseCommit,
     database::Database,
     state::{Account, AccountInfo, AccountStatus, Bytecode, EvmState},
-    DatabaseCommit,
 };
 
 /// Write Multicall3 bytecode directly into EVM state.

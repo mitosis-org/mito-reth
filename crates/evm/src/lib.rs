@@ -29,7 +29,7 @@ mod node_builder {
     use reth_chainspec::ChainSpec;
     use reth_ethereum::node::{
         api::{FullNodeTypes, NodeTypes},
-        builder::{components::ExecutorBuilder, BuilderContext},
+        builder::{BuilderContext, components::ExecutorBuilder},
     };
     use reth_ethereum_primitives::EthPrimitives;
 
