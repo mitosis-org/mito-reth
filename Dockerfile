@@ -3,7 +3,7 @@
 # ---------------------------------------------------------------------------
 # Stage 1: Build
 # ---------------------------------------------------------------------------
-FROM rust:1.88-bookworm AS builder
+FROM rust:1.91-bookworm AS builder
 
 # Install build deps (needed by reth's C/C++ transitive deps)
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -30,7 +30,7 @@ RUN mkdir -p crates/primitives/src crates/evm/src bin/mi-reth/src && \
 
 RUN --mount=type=cache,target=/usr/local/cargo/registry \
     --mount=type=cache,target=/build/target \
-    cargo build --release --bin mi-reth 2>/dev/null || true
+    cargo build --locked --release --bin mi-reth 2>/dev/null || true
 
 # Now copy real source and build
 COPY crates/ crates/
@@ -41,7 +41,7 @@ RUN touch crates/primitives/src/lib.rs crates/evm/src/lib.rs bin/mi-reth/src/mai
 
 RUN --mount=type=cache,target=/usr/local/cargo/registry \
     --mount=type=cache,target=/build/target \
-    cargo build --release --bin mi-reth && \
+    cargo build --locked --release --bin mi-reth && \
     cp target/release/mi-reth /usr/local/bin/mi-reth
 
 # ---------------------------------------------------------------------------

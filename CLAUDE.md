@@ -10,7 +10,7 @@ cargo build --release          # release
 cargo build -p mi-reth-evm     # single crate
 ```
 
-MSRV: Rust 1.88 (edition 2024, set in workspace `Cargo.toml`). No `rust-toolchain.toml`.
+MSRV: Rust 1.91 (effective — alloy-consensus 1.7.3 in `Cargo.lock` requires 1.91; workspace declares 1.88 but lock resolves higher). No `rust-toolchain.toml`.
 
 First build fetches reth v1.11.3 from git — takes several minutes.
 
