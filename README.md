@@ -20,7 +20,6 @@ crates/
 bin/
   mi-reth/              mi-reth binary — CLI entry point (thin wrapper over reth CLI)
     src/main.rs           Wires MitosisExecutorBuilder into the reth node builder
-    src/ress.rs           Ress subprotocol wiring (disabled — see below)
 ```
 
 ## Building
@@ -60,10 +59,6 @@ mi-reth node \
 ```
 
 The Engine API is exposed on `--authrpc.port` (default `8551`) over HTTP/IPC, identical to upstream reth.
-
-## Ress subprotocol (disabled)
-
-The `ress` stateless-sync RLPx subprotocol wiring lives in `bin/mi-reth/src/ress.rs` but is not compiled by default. The `reth-ress-protocol` and `reth-ress-provider` crates from the Mitosis fork depend on reth internals that conflict with upstream v1.11.3 when mixed in the same Cargo workspace. Enabling `ress` requires porting those two crates to depend on upstream v1.11.3 directly. Track this work in a child issue of MIT-307.
 
 ## License
 

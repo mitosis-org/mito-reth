@@ -37,7 +37,7 @@ cargo +nightly fmt --all --check      # check formatting
 |------|-------|---------|
 | `crates/primitives/` | `mi-reth-primitives` | Constants: `MULTICALL3_ADDRESS`, `MULTICALL3_REPLACEMENT_BLOCK` (786,000), `MULTICALL3_HARDFORK_CHAIN_ID` (124816). Bytecode accessor `get_multicall3_bytecode()`. |
 | `crates/evm/` | `mi-reth-evm` | `MitosisEvmConfig` wraps `EthEvmConfig`. `MitosisBlockExecutorFactory` / `MitosisBlockExecutor` wrap upstream executor. `apply_multicall3_deployment` fires the hook. `MitosisExecutorBuilder` is the node-builder adapter. |
-| `bin/mi-reth/` | `mi-reth` | Binary. `main.rs` wires `MitosisExecutorBuilder` into the reth node builder. `ress.rs` holds ress subprotocol wiring (disabled at compile time — `#[cfg(feature = "ress")]`). |
+| `bin/mi-reth/` | `mi-reth` | Binary. `main.rs` wires `MitosisExecutorBuilder` into the reth node builder. |
 
 ## Key files
 
@@ -50,7 +50,6 @@ cargo +nightly fmt --all --check      # check formatting
 | `crates/evm/src/config.rs` | `MitosisEvmConfig` — `ConfigureEvm` impl delegating to `EthEvmConfig`. |
 | `crates/evm/src/lib.rs` | Public re-exports and `MitosisExecutorBuilder` impl. |
 | `bin/mi-reth/src/main.rs` | CLI entry point using reth's `Cli::parse_args()`. |
-| `bin/mi-reth/src/ress.rs` | Ress subprotocol installer (disabled; see MIT-307). |
 
 ## Code style
 

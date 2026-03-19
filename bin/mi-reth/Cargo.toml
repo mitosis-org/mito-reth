@@ -5,23 +5,6 @@ edition.workspace = true
 license.workspace = true
 default-run = "mi-reth"
 
-# ---------------------------------------------------------------------------
-# Remaining fork point — ress subprotocol
-# ---------------------------------------------------------------------------
-# The `reth-ress-protocol` and `reth-ress-provider` crates live in the
-# Mitosis fork (https://github.com/mitosis-org/reth) and have no upstream
-# counterpart.  They depend on standard reth networking crates
-# (reth-eth-wire, reth-network, …) but from the fork, not from upstream
-# v1.11.3.  Mixing the two git sources in the same Cargo workspace creates
-# irreconcilable duplicate-crate conflicts.
-#
-# The ress integration is therefore intentionally EXCLUDED from this overlay
-# workspace until the ress crates are ported to depend on upstream reth
-# v1.11.3 directly.  Once that port is done, add them back here as optional
-# dependencies behind `--features ress`.
-#
-# See: bin/mi-reth/src/ress.rs for the wiring code (disabled at compile time).
-
 [dependencies]
 mi-reth-evm = { path = "../../crates/evm" }
 

@@ -6,15 +6,6 @@
 //! one-time state write at block 786 000 on `chain_id = 124816`.  On every
 //! other chain or block the hook is a no-op; this binary can be used as a
 //! drop-in replacement for `reth` on vanilla Ethereum networks.
-//!
-//! ## Remaining fork point: ress subprotocol
-//!
-//! The `ress` stateless-sync RLPx subprotocol wiring lives in `src/ress.rs`
-//! but is NOT compiled by default.  The `reth-ress-protocol` and
-//! `reth-ress-provider` crates from the Mitosis fork depend on fork-specific
-//! reth networking internals that conflict with upstream v1.11.3 when mixed
-//! in the same Cargo workspace.  Enabling ress requires porting those two
-//! crates to depend on upstream reth v1.11.3 directly.  See `Cargo.toml`.
 
 #![warn(unused_crate_dependencies)]
 
