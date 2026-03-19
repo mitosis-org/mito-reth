@@ -1,4 +1,4 @@
-//! `mi-reth` — Mitosis execution node built on upstream reth v1.11.3.
+//! `mito-reth` — Mitosis execution node built on upstream reth v1.11.3.
 //!
 //! Upstream reth Ethereum node with one thin addition:
 //!
@@ -9,7 +9,7 @@
 
 #![warn(unused_crate_dependencies)]
 
-use mi_reth_evm::MitosisExecutorBuilder;
+use mito_reth_evm::MitosisExecutorBuilder;
 use reth_ethereum::{
     cli::Cli,
     node::{EthereumAddOns, EthereumNode, builder::NodeHandle},

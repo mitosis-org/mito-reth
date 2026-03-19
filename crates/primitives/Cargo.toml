@@ -1,5 +1,5 @@
 [package]
-name        = "mi-reth-primitives"
+name        = "mito-reth-primitives"
 version.workspace = true
 edition.workspace = true
 license.workspace = true

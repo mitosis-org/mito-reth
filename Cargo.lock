@@ -4514,42 +4514,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "mi-reth"
-version = "0.1.0"
-dependencies = [
- "eyre",
- "mi-reth-evm",
- "reth-ethereum",
-]
-
-[[package]]
-name = "mi-reth-evm"
-version = "0.1.0"
-dependencies = [
- "alloy-consensus",
- "alloy-eips",
- "alloy-evm",
- "alloy-primitives",
- "alloy-rpc-types-engine",
- "eyre",
- "mi-reth-primitives",
- "reth-chainspec",
- "reth-ethereum",
- "reth-ethereum-primitives",
- "reth-evm",
- "reth-primitives-traits",
- "revm",
-]
-
-[[package]]
-name = "mi-reth-primitives"
-version = "0.1.0"
-dependencies = [
- "alloy-primitives",
- "hex",
-]
-
-[[package]]
 name = "mime"
 version = "0.3.17"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -4591,6 +4555,42 @@ dependencies = [
  "log",
  "wasi",
  "windows-sys 0.61.2",
+]
+
+[[package]]
+name = "mito-reth"
+version = "0.1.0"
+dependencies = [
+ "eyre",
+ "mito-reth-evm",
+ "reth-ethereum",
+]
+
+[[package]]
+name = "mito-reth-evm"
+version = "0.1.0"
+dependencies = [
+ "alloy-consensus",
+ "alloy-eips",
+ "alloy-evm",
+ "alloy-primitives",
+ "alloy-rpc-types-engine",
+ "eyre",
+ "mito-reth-primitives",
+ "reth-chainspec",
+ "reth-ethereum",
+ "reth-ethereum-primitives",
+ "reth-evm",
+ "reth-primitives-traits",
+ "revm",
+]
+
+[[package]]
+name = "mito-reth-primitives"
+version = "0.1.0"
+dependencies = [
+ "alloy-primitives",
+ "hex",
 ]
 
 [[package]]

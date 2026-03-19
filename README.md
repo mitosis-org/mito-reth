@@ -4,9 +4,9 @@ Mitosis execution client built on [reth](https://github.com/paradigmxyz/reth) v1
 
 ## What it is
 
-`mi-reth` is an upstream reth v1.11.3 Ethereum node with one addition:
+`mito-reth` is an upstream reth v1.11.3 Ethereum node with one addition:
 
-**Multicall3 bytecode hook** — at block 786,000 on chain `124816` (Mitosis devnet), the canonical Multicall3 contract bytecode is written to `0xca11bde05977b3631167028862be2a173976ca11` as a pre-execution state change. This makes standard tooling that relies on that address work from genesis without a separate deployment transaction. On any other chain or block the hook is a no-op, so `mi-reth` can be used as a drop-in replacement for `reth` on vanilla Ethereum networks.
+**Multicall3 bytecode hook** — at block 786,000 on chain `124816` (Mitosis devnet), the canonical Multicall3 contract bytecode is written to `0xca11bde05977b3631167028862be2a173976ca11` as a pre-execution state change. This makes standard tooling that relies on that address work from genesis without a separate deployment transaction. On any other chain or block the hook is a no-op, so `mito-reth` can be used as a drop-in replacement for `reth` on vanilla Ethereum networks.
 
 Everything else — EVM factory, precompiles, block assembly, RPC, P2P — is standard upstream reth v1.11.3.
 
@@ -15,10 +15,10 @@ Everything else — EVM factory, precompiles, block assembly, RPC, P2P — is st
 ```
 Cargo.toml              Workspace root — shared deps, reth v1.11.3 pinned here
 crates/
-  primitives/           mi-reth-primitives — Multicall3 address, block number, chain ID, bytecode
-  evm/                  mi-reth-evm — MitosisEvmConfig, executor wrapper, system call hook
+  primitives/           mito-reth-primitives — Multicall3 address, block number, chain ID, bytecode
+  evm/                  mito-reth-evm — MitosisEvmConfig, executor wrapper, system call hook
 bin/
-  mi-reth/              mi-reth binary — CLI entry point (thin wrapper over reth CLI)
+  mito-reth/            mito-reth binary — CLI entry point (thin wrapper over reth CLI)
     src/main.rs           Wires MitosisExecutorBuilder into the reth node builder
 ```
 
@@ -34,7 +34,7 @@ cargo build
 cargo build --release
 
 # verify
-./target/debug/mi-reth --help
+./target/debug/mito-reth --help
 ```
 
 The first build fetches reth v1.11.3 from git — expect several minutes.
@@ -49,10 +49,10 @@ Tests currently live in the individual crates. The codebase is small; most corre
 
 ## Running
 
-`mi-reth` accepts the same CLI flags as `reth`. Example:
+`mito-reth` accepts the same CLI flags as `reth`. Example:
 
 ```bash
-mi-reth node \
+mito-reth node \
   --chain <genesis.json> \
   --authrpc.jwtsecret <jwt.hex> \
   --authrpc.port 8551

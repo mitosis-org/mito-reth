@@ -2,7 +2,7 @@
 members = [
     "crates/primitives",
     "crates/evm",
-    "bin/mi-reth",
+    "bin/mito-reth",
 ]
 resolver = "2"
 
@@ -11,13 +11,13 @@ version     = "0.1.0"
 edition     = "2024"
 rust-version = "1.88"
 license     = "MIT OR Apache-2.0"
-repository  = "https://github.com/mitosis-org/mi-reth"
+repository  = "https://github.com/mitosis-org/mito-reth"
 
 # ---------------------------------------------------------------------------
 # Upstream reth v1.11.3 — all reth/* deps point here.
 # The ress subprotocol crates (reth-ress-protocol, reth-ress-provider) are
 # Mitosis-specific and intentionally NOT in upstream; they are declared in
-# bin/mi-reth/Cargo.toml and referenced from the mitosis fork directly.
+# bin/mito-reth/Cargo.toml and referenced from the mitosis fork directly.
 # ---------------------------------------------------------------------------
 [workspace.dependencies]
 # reth — upstream v1.11.3

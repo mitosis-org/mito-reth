@@ -1,17 +1,17 @@
 [package]
-name        = "mi-reth"
+name        = "mito-reth"
 version.workspace = true
 edition.workspace = true
 license.workspace = true
-default-run = "mi-reth"
+default-run = "mito-reth"
 
 [dependencies]
-mi-reth-evm = { path = "../../crates/evm" }
+mito-reth-evm = { path = "../../crates/evm" }
 
 reth-ethereum = { git = "https://github.com/paradigmxyz/reth", tag = "v1.11.3", features = ["node", "cli", "network"] }
 
 eyre.workspace   = true
 
 [[bin]]
-name = "mi-reth"
+name = "mito-reth"
 path = "src/main.rs"

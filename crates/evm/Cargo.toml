@@ -1,5 +1,5 @@
 [package]
-name        = "mi-reth-evm"
+name        = "mito-reth-evm"
 version.workspace = true
 edition.workspace = true
 license.workspace = true
@@ -9,7 +9,7 @@ default = ["node"]
 node = ["reth-ethereum/node", "dep:eyre"]
 
 [dependencies]
-mi-reth-primitives = { path = "../primitives" }
+mito-reth-primitives = { path = "../primitives" }
 
 # reth upstream v1.11.3
 reth-ethereum          = { git = "https://github.com/paradigmxyz/reth", tag = "v1.11.3", features = ["evm", "node-api"] }
