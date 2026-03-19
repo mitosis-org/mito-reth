@@ -25,7 +25,7 @@ bin/
 
 ## Building
 
-Requires Rust ≥ 1.88 (MSRV set in `Cargo.toml`).
+Requires Rust ≥ 1.91 (effective MSRV — `alloy-consensus` 1.7.3 in `Cargo.lock` requires 1.91).
 
 ```bash
 # debug
@@ -59,26 +59,7 @@ mi-reth node \
   --authrpc.port 8551
 ```
 
-The Engine API (used by Summit consensus) is exposed on `--authrpc.port` (default `8551`) over HTTP/IPC, identical to upstream reth.
-
-## Integration with Summit consensus
-
-Summit communicates with `mi-reth` via the standard [Engine API](https://github.com/ethereum/execution-apis/tree/main/src/engine). No custom protocol is required.
-
-To use `mi-reth` with the Summit local testnet (which expects a binary named `reth` in PATH):
-
-```bash
-# build release binary
-cargo build --release
-
-# make it available as 'reth'
-ln -s $(pwd)/target/release/mi-reth ~/.local/bin/reth  # or copy to any PATH dir
-
-# then run the Summit testnet
-cd repos/summit && cargo run --bin testnet
-```
-
-The testnet spins up 4 execution + 4 consensus nodes, all wired via Engine API over IPC.
+The Engine API is exposed on `--authrpc.port` (default `8551`) over HTTP/IPC, identical to upstream reth.
 
 ## Ress subprotocol (disabled)
 
