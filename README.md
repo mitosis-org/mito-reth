@@ -2,6 +2,8 @@
 
 Mitosis execution client built on [reth](https://github.com/paradigmxyz/reth) v1.11.3. A thin overlay that extends the standard Ethereum reth node with a single Mitosis-specific behaviour: a one-time Multicall3 bytecode injection at the devnet hardfork block.
 
+> Alpha software: `mito-reth` is currently in alpha and under active testing. Expect rough edges, incomplete validation, and breaking changes between releases.
+
 ## What it is
 
 `mito-reth` is an upstream reth v1.11.3 Ethereum node with one addition:
