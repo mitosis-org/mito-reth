@@ -39,6 +39,22 @@ cargo build --release
 
 The first build fetches reth v1.11.3 from git — expect several minutes.
 
+## Install
+
+Install the latest published binary:
+
+```bash
+curl --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/mitosis-org/mito-reth/main/scripts/install.sh | sh
+```
+
+Install a specific release tag:
+
+```bash
+curl --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/mitosis-org/mito-reth/main/scripts/install.sh | sh -s -- --version v0.1.0
+```
+
+The installer detects Linux/macOS/Windows and downloads the matching GitHub Release artifact into `/usr/local/bin` when writable, otherwise `~/.local/bin`.
+
 ## Testing
 
 ```bash

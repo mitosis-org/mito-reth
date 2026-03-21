@@ -7,20 +7,49 @@ on:
 permissions:
   contents: write
 
+env:
+  BIN_NAME: mito-reth
+  CARGO_TERM_COLOR: always
+
 jobs:
   build:
     name: Build ${{ matrix.target }}
     runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false
       matrix:
         include:
           - os: ubuntu-latest
             target: x86_64-unknown-linux-gnu
-            artifact: mito-reth-linux-amd64
+            artifact_name: mito-reth-linux-amd64
+            archive_name: mito-reth-linux-amd64.tar.gz
+            binary_name: mito-reth
+            package_format: tar.gz
           - os: ubuntu-latest
             target: aarch64-unknown-linux-gnu
-            artifact: mito-reth-linux-arm64
+            artifact_name: mito-reth-linux-arm64
+            archive_name: mito-reth-linux-arm64.tar.gz
+            binary_name: mito-reth
+            package_format: tar.gz
             cross: true
+          - os: macos-13
+            target: x86_64-apple-darwin
+            artifact_name: mito-reth-macos-amd64
+            archive_name: mito-reth-macos-amd64.tar.gz
+            binary_name: mito-reth
+            package_format: tar.gz
+          - os: macos-14
+            target: aarch64-apple-darwin
+            artifact_name: mito-reth-macos-arm64
+            archive_name: mito-reth-macos-arm64.tar.gz
+            binary_name: mito-reth
+            package_format: tar.gz
+          - os: windows-latest
+            target: x86_64-pc-windows-msvc
+            artifact_name: mito-reth-windows-amd64
+            archive_name: mito-reth-windows-amd64.zip
+            binary_name: mito-reth.exe
+            package_format: zip
 
     steps:
       - uses: actions/checkout@v4.2.2
@@ -31,7 +60,7 @@ jobs:
           targets: ${{ matrix.target }}
 
       - name: Install system deps (native)
-        if: ${{ !matrix.cross }}
+        if: ${{ !matrix.cross && startsWith(matrix.os, 'ubuntu') }}
         run: sudo apt-get update && sudo apt-get install -y clang libclang-dev cmake pkg-config libssl-dev
 
       - uses: Swatinem/rust-cache@v2
@@ -44,22 +73,36 @@ jobs:
 
       - name: Build (native)
         if: ${{ !matrix.cross }}
-        run: cargo build --release --bin mito-reth
+        shell: bash
+        run: cargo build --release --bin $BIN_NAME --target ${{ matrix.target }}
 
       - name: Build (cross)
         if: ${{ matrix.cross }}
-        run: cross build --release --bin mito-reth --target ${{ matrix.target }}
+        shell: bash
+        run: cross build --release --bin $BIN_NAME --target ${{ matrix.target }}
 
-      - name: Rename binary
+      - name: Package archive
+        shell: bash
         run: |
-          TARGET_DIR=${{ matrix.cross && format('target/{0}', matrix.target) || 'target' }}
-          cp ${TARGET_DIR}/release/mito-reth ${{ matrix.artifact }}
+          set -euo pipefail
+
+          staging_dir="${{ matrix.artifact_name }}"
+          binary_path="target/${{ matrix.target }}/release/${{ matrix.binary_name }}"
+
+          mkdir -p "$staging_dir"
+          cp "$binary_path" "$staging_dir/${{ matrix.binary_name }}"
+
+          if [[ "${{ matrix.package_format }}" == "zip" ]]; then
+            powershell -Command "Compress-Archive -Path '$staging_dir\\*' -DestinationPath '${{ matrix.archive_name }}'"
+          else
+            tar -czf "${{ matrix.archive_name }}" "$staging_dir"
+          fi
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4.6.2
         with:
-          name: ${{ matrix.artifact }}
-          path: ${{ matrix.artifact }}
+          name: ${{ matrix.artifact_name }}
+          path: ${{ matrix.archive_name }}
 
   release:
     name: Create Release
