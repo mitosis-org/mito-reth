@@ -25,13 +25,12 @@ jobs:
             archive_name: mito-reth-linux-amd64.tar.gz
             binary_name: mito-reth
             package_format: tar.gz
-          - os: ubuntu-latest
+          - os: ubuntu-24.04-arm
             target: aarch64-unknown-linux-gnu
             artifact_name: mito-reth-linux-arm64
             archive_name: mito-reth-linux-arm64.tar.gz
             binary_name: mito-reth
             package_format: tar.gz
-            cross: true
           - os: macos-14
             target: aarch64-apple-darwin
             artifact_name: mito-reth-macos-arm64
@@ -54,26 +53,16 @@ jobs:
           targets: ${{ matrix.target }}
 
       - name: Install system deps (native)
-        if: ${{ !matrix.cross && startsWith(matrix.os, 'ubuntu') }}
+        if: ${{ startsWith(matrix.os, 'ubuntu') }}
         run: sudo apt-get update && sudo apt-get install -y clang libclang-dev cmake pkg-config libssl-dev
 
       - uses: Swatinem/rust-cache@v2
         with:
           key: ${{ matrix.target }}
 
-      - name: Install cross
-        if: ${{ matrix.cross }}
-        run: cargo install cross --version 0.2.4 --locked
-
-      - name: Build (native)
-        if: ${{ !matrix.cross }}
+      - name: Build
         shell: bash
         run: cargo build --release --bin $BIN_NAME --target ${{ matrix.target }}
-
-      - name: Build (cross)
-        if: ${{ matrix.cross }}
-        shell: bash
-        run: cross build --release --bin $BIN_NAME --target ${{ matrix.target }}
 
       - name: Package archive
         shell: bash
