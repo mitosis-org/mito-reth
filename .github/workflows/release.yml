@@ -2,7 +2,15 @@ name: Release
 
 on:
   push:
-    tags: ["v*.*.*"]
+    tags:
+      - "v*.*.*"
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Build release artifacts without creating a GitHub Release"
+        required: false
+        default: true
+        type: boolean
 
 permissions:
   contents: write
@@ -12,8 +20,55 @@ env:
   CARGO_TERM_COLOR: always
 
 jobs:
+  prepare:
+    name: Prepare Release Context
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.meta.outputs.version }}
+      release_enabled: ${{ steps.meta.outputs.release_enabled }}
+    steps:
+      - uses: actions/checkout@v5
+
+      - id: meta
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          version="${GITHUB_REF_NAME}"
+          if [[ "${GITHUB_EVENT_NAME}" == "workflow_dispatch" ]]; then
+            version="manual-${GITHUB_SHA::7}"
+          fi
+
+          release_enabled="false"
+          if [[ "${GITHUB_EVENT_NAME}" == "push" ]]; then
+            release_enabled="true"
+          fi
+
+          echo "version=${version}" >> "$GITHUB_OUTPUT"
+          echo "release_enabled=${release_enabled}" >> "$GITHUB_OUTPUT"
+
+      - name: Validate tag matches crate version
+        if: ${{ github.event_name == 'push' }}
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          crate_version="$(cargo metadata --no-deps --format-version 1 | jq -r '.packages[] | select(.name == "mito-reth") | .version')"
+          tag_version="${GITHUB_REF_NAME#v}"
+
+          if [[ -z "${crate_version}" ]]; then
+            echo "Failed to read mito-reth crate version" >&2
+            exit 1
+          fi
+
+          if [[ "${crate_version}" != "${tag_version}" ]]; then
+            echo "Tag version (${tag_version}) does not match crate version (${crate_version})" >&2
+            exit 1
+          fi
+
   build:
     name: Build ${{ matrix.target }}
+    needs: prepare
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -45,20 +100,20 @@ jobs:
             package_format: zip
 
     steps:
-      - uses: actions/checkout@v4.2.2
+      - uses: actions/checkout@v5
 
       - uses: dtolnay/rust-toolchain@stable
         with:
           toolchain: "1.91"
           targets: ${{ matrix.target }}
 
-      - name: Install system deps (native)
+      - name: Install Linux system deps
         if: ${{ startsWith(matrix.os, 'ubuntu') }}
-        run: sudo apt-get update && sudo apt-get install -y clang libclang-dev cmake pkg-config libssl-dev
+        run: sudo apt-get update && sudo apt-get install -y clang libclang-dev cmake pkg-config libssl-dev jq
 
       - uses: Swatinem/rust-cache@v2
         with:
-          key: ${{ matrix.target }}
+          key: release-${{ matrix.target }}
 
       - name: Build
         shell: bash
@@ -81,26 +136,28 @@ jobs:
             tar -czf "${{ matrix.archive_name }}" "$staging_dir"
           fi
 
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4.6.2
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.artifact_name }}
           path: ${{ matrix.archive_name }}
 
   release:
     name: Create Release
-    needs: build
+    needs:
+      - prepare
+      - build
+    if: ${{ needs.prepare.outputs.release_enabled == 'true' }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4.2.2
-
-      - uses: actions/download-artifact@v4.3.0
+      - uses: actions/download-artifact@v4
         with:
-          path: artifacts/
+          path: artifacts
           merge-multiple: true
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
+          tag_name: ${{ needs.prepare.outputs.version }}
           files: artifacts/*
           generate_release_notes: true

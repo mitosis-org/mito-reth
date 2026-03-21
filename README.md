@@ -57,6 +57,8 @@ curl --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/mitosis-o
 
 The installer detects Linux/macOS/Windows and downloads the matching GitHub Release artifact into `/usr/local/bin` when writable, otherwise `~/.local/bin`. Published binaries currently target Linux `amd64`/`arm64`, macOS `arm64`, and Windows `amd64`.
 
+Release builds can also be tested without pushing a tag by running the `Release` workflow manually from GitHub Actions. The manual path is dry-run only: it builds and uploads workflow artifacts, but does not publish a GitHub Release.
+
 ## Testing
 
 ```bash
