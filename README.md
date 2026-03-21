@@ -55,7 +55,7 @@ Install a specific release tag:
 curl --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/mitosis-org/mito-reth/main/scripts/install.sh | sh -s -- --version v0.1.0
 ```
 
-The installer detects Linux/macOS/Windows and downloads the matching GitHub Release artifact into `/usr/local/bin` when writable, otherwise `~/.local/bin`.
+The installer detects Linux/macOS/Windows and downloads the matching GitHub Release artifact into `/usr/local/bin` when writable, otherwise `~/.local/bin`. Published binaries currently target Linux `amd64`/`arm64`, macOS `arm64`, and Windows `amd64`.
 
 ## Testing
 

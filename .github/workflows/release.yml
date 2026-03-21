@@ -32,12 +32,6 @@ jobs:
             binary_name: mito-reth
             package_format: tar.gz
             cross: true
-          - os: macos-13
-            target: x86_64-apple-darwin
-            artifact_name: mito-reth-macos-amd64
-            archive_name: mito-reth-macos-amd64.tar.gz
-            binary_name: mito-reth
-            package_format: tar.gz
           - os: macos-14
             target: aarch64-apple-darwin
             artifact_name: mito-reth-macos-arm64
