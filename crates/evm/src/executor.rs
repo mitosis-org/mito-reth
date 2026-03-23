@@ -16,10 +16,10 @@ use alloy_evm::{
     Evm, EvmFactory,
     block::{
         BlockExecutionError, BlockExecutionResult, BlockExecutor, BlockExecutorFactory,
-        BlockExecutorFor, ExecutableTx, OnStateHook,
+        BlockExecutorFor, ExecutableTx, OnStateHook, StateDB,
     },
 };
-use revm::{Database, database::State, inspector::Inspector};
+use revm::{Database, inspector::Inspector};
 
 use crate::system_calls::apply_multicall3_deployment;
 
@@ -137,12 +137,12 @@ where
 
     fn create_executor<'a, DB, I>(
         &'a self,
-        evm: <Self::EvmFactory as EvmFactory>::Evm<&'a mut State<DB>, I>,
+        evm: <Self::EvmFactory as EvmFactory>::Evm<DB, I>,
         ctx: Self::ExecutionCtx<'a>,
     ) -> impl BlockExecutorFor<'a, Self, DB, I>
     where
-        DB: Database + std::fmt::Debug + 'a,
-        I: Inspector<<Self::EvmFactory as EvmFactory>::Context<&'a mut State<DB>>> + 'a,
+        DB: StateDB + 'a,
+        I: Inspector<<Self::EvmFactory as EvmFactory>::Context<DB>> + 'a,
     {
         MitosisBlockExecutor::new(self.inner.create_executor(evm, ctx))
     }

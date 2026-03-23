@@ -14,30 +14,34 @@ license     = "MIT OR Apache-2.0"
 repository  = "https://github.com/mitosis-org/mito-reth"
 
 # ---------------------------------------------------------------------------
-# Upstream reth v1.11.3 — all reth/* deps point here.
-# The ress subprotocol crates (reth-ress-protocol, reth-ress-provider) are
-# Mitosis-specific and intentionally NOT in upstream; they are declared in
-# bin/mito-reth/Cargo.toml and referenced from the mitosis fork directly.
+# Reth source of truth.
+# We pin to mitosis-org/reth main via `rev` so local Mitosis patches can land
+# there without introducing path dependencies or submodules here.
 # ---------------------------------------------------------------------------
 [workspace.dependencies]
-# reth — upstream v1.11.3
-reth-ethereum         = { git = "https://github.com/paradigmxyz/reth", tag = "v1.11.3", features = ["node", "evm", "cli", "network"] }
-reth-evm              = { git = "https://github.com/paradigmxyz/reth", tag = "v1.11.3" }
-reth-chainspec        = { git = "https://github.com/paradigmxyz/reth", tag = "v1.11.3" }
-reth-ethereum-primitives = { git = "https://github.com/paradigmxyz/reth", tag = "v1.11.3" }
-reth-primitives-traits = { git = "https://github.com/paradigmxyz/reth", tag = "v1.11.3" }
-reth-node-builder     = { git = "https://github.com/paradigmxyz/reth", tag = "v1.11.3" }
+# reth — mitosis fork, pinned to current `main` head
+reth-ethereum            = { git = "https://github.com/mitosis-org/reth", rev = "c6c0c8d7f668fbfcd40b45ef5828d29c85b9bca7", features = ["node", "evm", "cli", "network"] }
+reth-evm                 = { git = "https://github.com/mitosis-org/reth", rev = "c6c0c8d7f668fbfcd40b45ef5828d29c85b9bca7" }
+reth-chainspec           = { git = "https://github.com/mitosis-org/reth", rev = "c6c0c8d7f668fbfcd40b45ef5828d29c85b9bca7" }
+reth-ethereum-primitives = { git = "https://github.com/mitosis-org/reth", rev = "c6c0c8d7f668fbfcd40b45ef5828d29c85b9bca7" }
+reth-primitives-traits   = { git = "https://github.com/mitosis-org/reth", rev = "c6c0c8d7f668fbfcd40b45ef5828d29c85b9bca7" }
+reth-node-builder        = { git = "https://github.com/mitosis-org/reth", rev = "c6c0c8d7f668fbfcd40b45ef5828d29c85b9bca7" }
+reth-e2e-test-utils      = { git = "https://github.com/mitosis-org/reth", rev = "c6c0c8d7f668fbfcd40b45ef5828d29c85b9bca7" }
+reth-node-ethereum       = { git = "https://github.com/mitosis-org/reth", rev = "c6c0c8d7f668fbfcd40b45ef5828d29c85b9bca7" }
+reth-tracing             = { git = "https://github.com/mitosis-org/reth", rev = "c6c0c8d7f668fbfcd40b45ef5828d29c85b9bca7" }
+reth-node-core           = { git = "https://github.com/mitosis-org/reth", rev = "c6c0c8d7f668fbfcd40b45ef5828d29c85b9bca7" }
+reth-payload-builder     = { git = "https://github.com/mitosis-org/reth", rev = "c6c0c8d7f668fbfcd40b45ef5828d29c85b9bca7" }
 
-# alloy (versions from reth v1.11.3 workspace)
-alloy-evm        = "0.27.2"
+# alloy (versions from mitosis-org/reth main workspace)
+alloy-evm        = "0.29.2"
 alloy-primitives = { version = "1.5.6", default-features = false, features = ["std"] }
-alloy-consensus  = { version = "1.6.3", default-features = false, features = ["std"] }
-alloy-eips       = { version = "1.6.3", default-features = false, features = ["std"] }
-alloy-rpc-types-engine = { version = "1.6.3", default-features = false, features = ["std"] }
+alloy-consensus  = { version = "1.7.3", default-features = false, features = ["std"] }
+alloy-eips       = { version = "1.7.3", default-features = false, features = ["std"] }
+alloy-rpc-types-engine = { version = "1.7.3", default-features = false, features = ["std"] }
 alloy-rlp        = "0.3.13"
 
-# revm (version from reth v1.11.3 workspace)
-revm = { version = "34.0.0", default-features = false, features = ["std"] }
+# revm (version from mitosis-org/reth main workspace)
+revm = { version = "36.0.0", default-features = false, features = ["std"] }
 
 # misc
 eyre   = "0.6"

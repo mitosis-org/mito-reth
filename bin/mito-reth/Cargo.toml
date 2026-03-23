@@ -8,7 +8,7 @@ default-run = "mito-reth"
 [dependencies]
 mito-reth-evm = { path = "../../crates/evm" }
 
-reth-ethereum = { git = "https://github.com/paradigmxyz/reth", tag = "v1.11.3", features = ["node", "cli", "network"] }
+reth-ethereum.workspace = true
 
 eyre.workspace   = true
 
